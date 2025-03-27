@@ -23,7 +23,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     TopNavbarComponent,
     AnalyticsTableComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, MatIconModule, MatToolbarModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    MatIconModule,
+    MatToolbarModule,
+  ],
   providers: [provideClientHydration(withEventReplay())],
   bootstrap: [AppComponent],
 })
