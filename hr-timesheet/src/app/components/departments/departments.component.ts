@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DepartmentService } from '../../services/departments.service';
+import { DepartmentsService } from 'src/app/services/departments.service';
 import { Department } from '../../interfaces/department';
 import { Router } from '@angular/router';
 
@@ -9,14 +9,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./departments.component.scss'],
 })
 export class DepartmentsComponent implements OnInit {
-  departments: Department[];
+  departments: Department[] | undefined;
 
   constructor(
-    private departmentService: DepartmentService,
+    private departmentsService: DepartmentsService,
     private router: Router
   ) {}
   ngOnInit(): void {
-    this.departments = this.departmentService.departments;
+    this.departmentsService.getDepartments().subscribe((departments) => {
+      this.departments = departments;
+    });
   }
   goToDepartment(departmentId: string): void {
     this.router.navigate(['./timesheet', { id: departmentId }]);

@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Department } from '../interfaces/department';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 @Injectable({
   providedIn: 'root',
 })
-export class DepartmentService {
-  departments: Department[] = [
-    { id: '1', name: 'Customer Success' },
-    { id: '2', name: 'Sales' },
-    { id: '3', name: 'Finance' },
-  ];
+export class DepartmentsService {
+  departments: Department[] = [];
+
+  constructor(private http: HttpClient) {}
+  getDepartments(): Observable<Department[]> {
+    return this.http.get<Department[]>('https://api.example.com/departments');
+  }
 }

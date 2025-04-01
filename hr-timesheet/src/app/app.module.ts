@@ -7,9 +7,9 @@ import { AnalyticsComponent } from './components/analytics/analytics.component';
 import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
 import { AnalyticsTableComponent } from './components/analytics-table/analytics-table.component';
 import { DepartmentsComponent } from './components/departments/departments.component';
-import { MaterialModule } from './modules/material/material.module';
-import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClient } from '@angular/common/http';
+import { MaterialModule } from './modules/material/material.module'; // Ensure this path is correct
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FormsModule,
+    HttpClient,
   ],
   providers: [],
   bootstrap: [AppComponent],
