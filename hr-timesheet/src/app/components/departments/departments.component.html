@@ -2,7 +2,7 @@
   <mat-card>
     <mat-list>
       <mat-list-item
-        *ngFor="let department of departments"
+        *ngFor="let department of $departments | async"
         (click)="goToDepartment(department.id)"
       >
         {{ department.name }}
