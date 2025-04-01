@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DepartmentsService } from 'src/app/services/departments.service';
+import { DepartmentsService } from '../../services/departments.service';
 import { Department } from '../../interfaces/department';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';

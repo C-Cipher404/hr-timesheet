@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Department } from '../../interfaces/department';
-import { DepartmentService } from '../../services/departments.service';
+import { DepartmentsService } from '../../services/departments.service';
 import { Employee } from '../../interfaces/employee';
 import { FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
 
@@ -28,7 +28,7 @@ export class TimesheetComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentsService
   ) {}
   ngOnInit(): void {
     this.departments = this.departmentService.departments;

@@ -9,7 +9,10 @@ import { AnalyticsTableComponent } from './components/analytics-table/analytics-
 import { DepartmentsComponent } from './components/departments/departments.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient } from '@angular/common/http';
-import { MaterialModule } from './modules/material/material.module'; // Ensure this path is correct
+import { MaterialModule } from './modules/material/material.module';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from '../environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,8 @@ import { MaterialModule } from './modules/material/material.module'; // Ensure t
     BrowserAnimationsModule,
     MaterialModule,
     HttpClient,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
