@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Department } from '../../interfaces/department';
 import { DepartmentsService } from '../../services/departments.service';
 import { Employee } from '../../interfaces/employee';
 import { FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
+import { EmployeeService } from '../../services/employee.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-timesheet',
@@ -11,8 +13,9 @@ import { FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
   styleUrl: './timesheet.component.scss',
 })
 export class TimesheetComponent implements OnInit {
-  departments: Department[];
-  department: Department;
+  $departments: Observable<Department[]> | undefined;
+  departments: Department[] | undefined;
+  department: Department | undefined;
   employeeNameFC = new FormControl('', this.nameValidator());
   employees: Employee[] = [];
   employeeId = 0;
@@ -25,23 +28,29 @@ export class TimesheetComponent implements OnInit {
     'Saturday',
     'Sunday',
   ];
+  departmentsService: any;
 
   constructor(
     private route: ActivatedRoute,
-    private departmentService: DepartmentsService
+    private departmentService: DepartmentsService,
+    private employeeService: EmployeeService,
+    private router: Router
   ) {}
   ngOnInit(): void {
-    this.departments = this.departmentService.departments;
-    this.department = this.departments.find(
-      (department) => department.id === this.route.snapshot.params['id']
-    );
+    this.$departments = this.departmentsService.getDepartments();
+
+    this.$departments.subscribe((x) => {
+      this.department = x.find(
+        (dept) => dept.id === this.route.snapshot.params['id']
+      );
+    });
   }
   addEmployee(): void {
     if (this.employeeNameFC.value) {
       this.employeeId++;
 
       this.employees.push({
-        id: this.employeeId.toString(),
+        // id: this.employeeId.toString(),
         departmentId: this.department?.id,
         name: this.employeeNameFC.value,
         payRate: Math.floor(Math.random() * 50) + 50,
