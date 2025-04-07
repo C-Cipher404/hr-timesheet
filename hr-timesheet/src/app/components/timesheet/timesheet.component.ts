@@ -104,4 +104,16 @@ export class TimesheetComponent implements OnInit {
   deleteEmployee(index: number): void {
     this.employees.splice(index, 1);
   }
+
+  submit(): void {
+    this.employees.forEach((employee) => {
+      if (employee.id) {
+        this.employeeService.updateEmployeeHours(employee);
+      } else {
+        this.employeeService.saveEmployeeHours(employee);
+      }
+    });
+
+    this.router.navigate(['./departments']);
+  }
 }
