@@ -101,10 +101,13 @@ export class TimesheetComponent implements OnInit {
       employee.sunday
     );
   }
-  deleteEmployee(index: number): void {
+  deleteEmployee(employee: Employee, index: number): void {
+    if (employee.id) {
+      this.employeeService.deleteEmployeeHours(employee);
+    }
+
     this.employees.splice(index, 1);
   }
-
   submit(): void {
     this.employees.forEach((employee) => {
       if (employee.id) {
