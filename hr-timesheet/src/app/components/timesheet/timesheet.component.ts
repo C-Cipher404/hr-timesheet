@@ -3,14 +3,44 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Department } from '../../interfaces/department';
 import { DepartmentsService } from '../../services/departments.service';
 import { Employee } from '../../interfaces/employee';
-import { FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
+import {
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidatorFn,
+  AbstractControl,
+} from '@angular/forms';
 import { EmployeeService } from '../../services/employee.service';
 import { Observable, switchMap, tap } from 'rxjs';
+import { CommonModule, NgIf, NgFor, TitleCasePipe } from '@angular/common';
+import { JsonPipe } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatError } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-timesheet',
+  standalone: true,
   templateUrl: './timesheet.component.html',
-  styleUrl: './timesheet.component.scss',
+  styleUrls: ['./timesheet.component.scss'],
+  imports: [
+    CommonModule,
+    NgIf,
+    NgFor,
+    FormsModule,
+    ReactiveFormsModule,
+    TitleCasePipe,
+    JsonPipe,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatError,
+  ],
 })
 export class TimesheetComponent implements OnInit {
   $departments: Observable<Department[]> | undefined;
@@ -28,7 +58,6 @@ export class TimesheetComponent implements OnInit {
     'Saturday',
     'Sunday',
   ];
-  departmentsService: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,8 +65,9 @@ export class TimesheetComponent implements OnInit {
     private employeeService: EmployeeService,
     private router: Router
   ) {}
+
   ngOnInit(): void {
-    this.$departments = this.departmentsService.getDepartments();
+    this.$departments = this.departmentService.getDepartments();
 
     this.$departments
       .pipe(
@@ -46,7 +76,7 @@ export class TimesheetComponent implements OnInit {
             (dept) => dept.id === this.route.snapshot.params['id']
           );
           return this.employeeService.getEmployeeHoursByDepartment(
-            this.department.id
+            this.department?.id || ''
           );
         }),
         tap((employees) => {
@@ -55,12 +85,12 @@ export class TimesheetComponent implements OnInit {
       )
       .subscribe();
   }
+
   addEmployee(): void {
     if (this.employeeNameFC.value) {
       this.employeeId++;
 
       this.employees.push({
-        // id: this.employeeId.toString(),
         departmentId: this.department?.id,
         name: this.employeeNameFC.value,
         payRate: Math.floor(Math.random() * 50) + 50,
@@ -76,15 +106,17 @@ export class TimesheetComponent implements OnInit {
       this.employeeNameFC.setValue('');
     }
   }
+
   nameValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       let error = null;
       if (this.employees && this.employees.length) {
-        this.employees.forEach((employee) => {
+        for (const employee of this.employees) {
           if (employee.name.toLowerCase() === control.value.toLowerCase()) {
             error = { duplicate: true };
+            break;
           }
-        });
+        }
       }
       return error;
     };
@@ -101,13 +133,14 @@ export class TimesheetComponent implements OnInit {
       employee.sunday
     );
   }
+
   deleteEmployee(employee: Employee, index: number): void {
     if (employee.id) {
       this.employeeService.deleteEmployeeHours(employee);
     }
-
     this.employees.splice(index, 1);
   }
+
   submit(): void {
     this.employees.forEach((employee) => {
       if (employee.id) {

@@ -1,6 +1,7 @@
 <div class="main-container">
   <div class="cards">
     <h2>{{ department.name }}</h2>
+
     <mat-card>
       <mat-form-field>
         <input
@@ -9,10 +10,11 @@
           placeholder="Employee Name"
           type="text"
         />
-        <mat-error *ngIf="employeeNameFC.hasError('duplicate')"
-          >Duplicate Name</mat-error
-        >
+        <mat-error *ngIf="employeeNameFC.hasError('duplicate')">
+          Duplicate Name
+        </mat-error>
       </mat-form-field>
+
       <button
         mat-mini-fab
         color="primary"
@@ -21,15 +23,19 @@
       >
         <mat-icon>add</mat-icon>
       </button>
+
       <div>{{ employees | json }}</div>
     </mat-card>
+
     <mat-card class="hours">
       <table>
         <thead>
-          <th>Name</th>
-          <th *ngFor="let day of weekdays">{{ day | titlecase }}</th>
-          <th>Total Hours</th>
-          <th></th>
+          <tr>
+            <th>Name</th>
+            <th *ngFor="let day of weekdays">{{ day | titlecase }}</th>
+            <th>Total Hours</th>
+            <th></th>
+          </tr>
         </thead>
 
         <tbody>
@@ -45,15 +51,22 @@
             </td>
             <td class="total-cell">{{ getTotalHours(employee) }}</td>
             <td>
-              <button mat-icon-button (click)="deleteEmployee(i)">
+              <button mat-icon-button (click)="deleteEmployee(employee, i)">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <button mat-raised-button color="primary" class="submit" 
-        (click)="submitTimesheet()">Submit</button>">
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="submit"
+        (click)="submit()"
+      >
+        Submit
+      </button>
     </mat-card>
   </div>
 </div>

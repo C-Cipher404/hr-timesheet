@@ -1,11 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Employee } from '../../interfaces/employee';
 import { EmployeeService } from '../../services/employee.service';
+import { CommonModule } from '@angular/common';
+import { NgFor } from '@angular/common';
+import { TitleCasePipe, CurrencyPipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-analytics-table',
+  standalone: true,
   templateUrl: './analytics-table.component.html',
   styleUrl: './analytics-table.component.scss',
+  imports: [CommonModule, NgFor, TitleCasePipe, CurrencyPipe, DecimalPipe],
 })
 export class AnalyticsTableComponent implements OnInit {
   @Input()
